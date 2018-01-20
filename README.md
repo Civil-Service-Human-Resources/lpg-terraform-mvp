@@ -1,4 +1,4 @@
-# LPG Terraform
+# LPG Terraform for MVP
 
 ## Prerequisite
 
