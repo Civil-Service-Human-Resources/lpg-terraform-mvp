@@ -87,20 +87,6 @@ resource "azurerm_network_security_rule" "https" {
   network_security_group_name = "${azurerm_network_security_group.public_sg.name}"
 }
 
-resource "azurerm_network_security_rule" "wso2" {
-  name                        = "wso2"
-  priority                    = 104
-  direction                   = "Inbound"
-  access                      = "Allow"
-  protocol                    = "Tcp"
-  source_port_range           = "*"
-  destination_port_range      = "9443"
-  source_address_prefix       = "0.0.0.0/0"
-  destination_address_prefix  = "0.0.0.0/0"
-  resource_group_name         = "${azurerm_resource_group.rg.name}"
-  network_security_group_name = "${azurerm_network_security_group.public_sg.name}"
-}
-
 resource "azurerm_network_security_group" "private_sg" {
   name                = "PrivateSecurityGroup1"
   location            = "${var.location}"
