@@ -67,7 +67,7 @@ variable "key_data" {
   type    = "map"
   default = {
     "test" = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDAp2bhqIZCvmAfFlY0j3vnWpZYqM1rf5pkK5jIUNv5MvFyWoMKtCvYz7asGYC57eJWThVKxd3O7EeRXTkku2AEEqoeMAcFy+zbo0dlWshG8X6+SJm17uvZwDOCYQsE2rqU8OtOKCRD16aj6L1eOUM5SM201S7kCuhgteIUkqYITo+9DogLFJek68tMmhiH90jKURVLFCWMDpocOjG59mAN9RmoHB9iDo4ExnV24ALhFXce7x4RiKy6Ri82Xda+wPy97o6Af3IjpzFv7uThtSMWuFU2+qJCqiOO1iekqRgWobFiesnMZUlPZ71ehKHDQ5dUyxmLtwJX+Et6iDfqpPIP superroot@MBP-SR1.local"
-    "booooo" = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDAp2bhqIZCvmAfFlY0j3vnWpZYqM1rf5pkK5jIUNv5MvFyWoMKtCvYz7asGYC57eJWThVKxd3O7EeRXTkku2AEEqoeMAcFy+zbo0dlWshG8X6+SJm17uvZwDOCYQsE2rqU8OtOKCRD16aj6L1eOUM5SM201S7kCuhgteIUkqYITo+9DogLFJek68tMmhiH90jKURVLFCWMDpocOjG59mAN9RmoHB9iDo4ExnV24ALhFXce7x4RiKy6Ri82Xda+wPy97o6Af3IjpzFv7uThtSMWuFU2+qJCqiOO1iekqRgWobFiesnMZUlPZ71ehKHDQ5dUyxmLtwJX+Et6iDfqpPIP superroot@MBP-SR1.local"
+    "newkey" = ""
     "prod" = ""
   }
 }
