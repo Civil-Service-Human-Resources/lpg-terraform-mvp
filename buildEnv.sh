@@ -36,9 +36,10 @@ cd lpg-terraform-mvp
 #add public key to variables.tf
 newPub=`cat ~/.ssh/${newEnv}.key.pub` || error
 gsed -i -e "/newkey/a \    \"${newEnv}\" = \"${newPub}\"" variables.tf
-#decrypt stateS3.tf
+#decrypt files
 echo ${vaultpass} > vault.yml
 ansible-vault decrypt stateS3.tf --vault-password-file=vault.yml
+ansible-vault decrypt key.tf --vault-password-file=vault.yml
 #run terraform
 terraform init || error
 terraform workspace new ${newEnv} || error
