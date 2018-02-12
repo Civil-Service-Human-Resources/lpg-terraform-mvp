@@ -1,11 +1,11 @@
 resource "azurerm_resource_group" "rg" {
   name     = "${terraform.workspace}_${var.resource_group}"
-  location = "${var.location}"
+  location = "${lookup(var.zone, terraform.workspace)}"
 }
 
 resource "azurerm_virtual_network" "vnet" {
   name                = "${var.virtual_network_name}"
-  location            = "${var.location}"
+  location            = "${lookup(var.zone, terraform.workspace)}"
   address_space       = ["${var.address_space}"]
   resource_group_name = "${azurerm_resource_group.rg.name}"
 }
@@ -33,7 +33,7 @@ resource "azurerm_subnet" "subnet_data" {
 
 resource "azurerm_storage_account" "stor" {
   name                     = "${terraform.workspace}${var.dns_name}stor"
-  location                 = "${var.location}"
+  location                 = "${lookup(var.zone, terraform.workspace)}"
   resource_group_name      = "${azurerm_resource_group.rg.name}"
   account_tier             = "${var.storage_account_tier}"
   account_replication_type = "${var.storage_replication_type}"
@@ -41,7 +41,7 @@ resource "azurerm_storage_account" "stor" {
 
 resource "azurerm_network_security_group" "public_sg" {
   name                = "PublicSecurityGroup1"
-  location            = "${var.location}"
+  location            = "${lookup(var.zone, terraform.workspace)}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
 }
 
@@ -89,7 +89,7 @@ resource "azurerm_network_security_rule" "https" {
 
 resource "azurerm_network_security_group" "private_sg" {
   name                = "PrivateSecurityGroup1"
-  location            = "${var.location}"
+  location            = "${lookup(var.zone, terraform.workspace)}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
 }
 

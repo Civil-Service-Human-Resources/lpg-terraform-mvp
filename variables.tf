@@ -13,13 +13,13 @@ variable "dns_name" {
   default = "lpg"
 }
 
-//variable "location" {
-//  description = "The location/region where the virtual network is created. Changing this forces a new resource to be created."
-//  default     = "ukwest"
-//}
-// pass this as a environment variable -var 'location=uksouth' \
-// terraform apply -var 'location=uksouth    ----- for mvp_test
-// terraform apply -var 'location=ukwest     ----- for mvp_demo
+variable "zone" {
+  type = "map"
+  default = {
+    "demo" = "ukwest"
+    "test" = "uksouth"
+  }
+}
 
 variable "virtual_network_name" {
   description = "The name for the virtual network."
@@ -67,12 +67,11 @@ variable "admin_username" {
 }
 
 variable "key_data" {
-  type    = "map"
+  type = "map"
   default = {
     "test" = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDAp2bhqIZCvmAfFlY0j3vnWpZYqM1rf5pkK5jIUNv5MvFyWoMKtCvYz7asGYC57eJWThVKxd3O7EeRXTkku2AEEqoeMAcFy+zbo0dlWshG8X6+SJm17uvZwDOCYQsE2rqU8OtOKCRD16aj6L1eOUM5SM201S7kCuhgteIUkqYITo+9DogLFJek68tMmhiH90jKURVLFCWMDpocOjG59mAN9RmoHB9iDo4ExnV24ALhFXce7x4RiKy6Ri82Xda+wPy97o6Af3IjpzFv7uThtSMWuFU2+qJCqiOO1iekqRgWobFiesnMZUlPZ71ehKHDQ5dUyxmLtwJX+Et6iDfqpPIP superroot@MBP-SR1.local"
-    "newkey" = ""
-    "prod" = ""
     "demo" = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDGyZ7MTiyf/1flcZJkzRJD2IRikaYyK38tWXND7nxOz6ri0WRlvxvf+HYgmuJgJOF+0tGS9Tg31+s4TzUr0uaRfMc5ITPOdpD4nbPPjDXouwNRYh+/eSf8xlMu2WrNPrFpY3s2w/2dRn43yMPz/mIqxURyDhoe3+mfAvpEjfpJbZRKO4Q44dHsZKOBf7umBWwb8BSB1H++2bpb1QBvK5lI2Dxec10wjG1u8Epay9mdXN6FNNhAjL6vhK2byQ8KTxxPinqVYmX3TGjHQnbPdpjMT+iC+fjHfyrr6hLCdoHJfP5R93X/cjaWRxEHbdcLbQdwVPYwX7C87yKo8eXKxsIx superroot@superroot.local"
-
+    "newkey" = ""
   }
 }
+

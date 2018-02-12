@@ -17,7 +17,7 @@ variable "app_vm_size" {
 
 resource "azurerm_availability_set" "app_avset" {
   name                         = "${var.dns_name}avset"
-  location                     = "${var.location}"
+  location                     = "${lookup(var.zone, terraform.workspace)}"
   resource_group_name          = "${azurerm_resource_group.rg.name}"
   platform_fault_domain_count  = 2
   platform_update_domain_count = 2
@@ -26,7 +26,7 @@ resource "azurerm_availability_set" "app_avset" {
 
 resource "azurerm_network_interface" "app_nic" {
   name                = "${var.rg_prefix}-${var.app_name}-nic-${format("%02d", count.index+1)}"
-  location            = "${var.location}"
+  location            = "${lookup(var.zone, terraform.workspace)}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
   network_security_group_id  =  "${azurerm_network_security_group.private_sg.id}"
 
@@ -42,7 +42,7 @@ resource "azurerm_network_interface" "app_nic" {
 
 resource "azurerm_managed_disk" "app_datadisk" {
   name                 = "${var.app_name}-datadisk-${format("%02d", count.index+1)}"
-  location             = "${var.location}"
+  location             = "${lookup(var.zone, terraform.workspace)}"
   resource_group_name  = "${azurerm_resource_group.rg.name}"
   storage_account_type = "Standard_LRS"
   create_option        = "Empty"
@@ -53,7 +53,7 @@ resource "azurerm_managed_disk" "app_datadisk" {
 
 resource "azurerm_virtual_machine" "app_vm" {
   name                  = "${var.rg_prefix}-${var.app_name}vm-${format("%02d", count.index+1)}"
-  location              = "${var.location}"
+  location              = "${lookup(var.zone, terraform.workspace)}"
   resource_group_name   = "${azurerm_resource_group.rg.name}"
   vm_size               = "${var.app_vm_size}"
   network_interface_ids = ["${element(azurerm_network_interface.app_nic.*.id, count.index)}"]

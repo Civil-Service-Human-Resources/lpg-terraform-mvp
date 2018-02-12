@@ -17,7 +17,7 @@ variable "data_vm_size" {
 
 resource "azurerm_availability_set" "data_avset" {
   name                         = "${var.dns_name}avset"
-  location                     = "${var.location}"
+  location                     = "${lookup(var.zone, terraform.workspace)}"
   resource_group_name          = "${azurerm_resource_group.rg.name}"
   platform_fault_domain_count  = 2
   platform_update_domain_count = 2
@@ -26,7 +26,7 @@ resource "azurerm_availability_set" "data_avset" {
 
 resource "azurerm_network_interface" "data_nic" {
   name                = "${var.rg_prefix}-${var.data_name}-nic-${format("%02d", count.index+1)}"
-  location            = "${var.location}"
+  location            = "${lookup(var.zone, terraform.workspace)}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
   network_security_group_id  =  "${azurerm_network_security_group.private_sg.id}"
 
@@ -43,7 +43,7 @@ resource "azurerm_network_interface" "data_nic" {
 
 resource "azurerm_public_ip" "data_pip" {
   name                         = "${var.rg_prefix}-${var.data_name}-ip-${format("%02d", count.index+1)}"
-  location                     = "${var.location}"
+  location                     = "${lookup(var.zone, terraform.workspace)}"
   resource_group_name          = "${azurerm_resource_group.rg.name}"
   public_ip_address_allocation = "Dynamic"
   domain_name_label            = "${var.data_name}-${terraform.workspace}-${var.dns_name}"
@@ -53,7 +53,7 @@ resource "azurerm_public_ip" "data_pip" {
 
 resource "azurerm_managed_disk" "data_datadisk" {
   name                 = "${var.data_name}-datadisk-${format("%02d", count.index+1)}"
-  location             = "${var.location}"
+  location             = "${lookup(var.zone, terraform.workspace)}"
   resource_group_name  = "${azurerm_resource_group.rg.name}"
   storage_account_type = "Standard_LRS"
   create_option        = "Empty"
@@ -64,7 +64,7 @@ resource "azurerm_managed_disk" "data_datadisk" {
 
 resource "azurerm_virtual_machine" "data_vm" {
   name                  = "${var.rg_prefix}-${var.data_name}vm-${format("%02d", count.index+1)}"
-  location              = "${var.location}"
+  location              = "${lookup(var.zone, terraform.workspace)}"
   resource_group_name   = "${azurerm_resource_group.rg.name}"
   vm_size               = "${var.data_vm_size}"
   network_interface_ids = ["${element(azurerm_network_interface.data_nic.*.id, count.index)}"]
