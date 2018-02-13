@@ -85,7 +85,7 @@ resource "azurerm_virtual_machine" "public_vm" {
   }
 
   storage_data_disk {
-      name              = "${var.public_name}-datadisk-${format("%02d", count.index+1)}"
+      name              = "${azurerm_managed_disk.public_datadisk.name}"
       managed_disk_id   = "${element(azurerm_managed_disk.public_datadisk.*.id, count.index)}"
       managed_disk_type = "Standard_LRS"
       disk_size_gb      = "10"
