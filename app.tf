@@ -12,7 +12,7 @@ variable "app_vm_count" {
 
 variable "app_vm_size" {
   description = "Specifies the size of the virtual machine."
-  default     = "Standard_A1_v2"
+  default     = "Standard_A2_v2"
 }
 
 resource "azurerm_availability_set" "app_avset" {
@@ -72,6 +72,15 @@ resource "azurerm_virtual_machine" "app_vm" {
     caching           = "ReadWrite"
     create_option     = "FromImage"
   }
+
+  storage_data_disk {
+      name              = "${var.public_name}-data_disk-${format("%02d", count.index+1)}"
+      managed_disk_id   = "${element(azurerm_managed_disk.app_datadisk.*.id, count.index)}"
+      managed_disk_type = "Standard_LRS"
+      disk_size_gb      = "10"
+      create_option     = "Attach"
+      lun               = 0
+    }
 
   os_profile {
     computer_name  = "${var.app_name}-${format("%02d", count.index+1)}"

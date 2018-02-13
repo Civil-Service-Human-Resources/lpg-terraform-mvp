@@ -84,6 +84,15 @@ resource "azurerm_virtual_machine" "data_vm" {
     create_option     = "FromImage"
   }
 
+  storage_data_disk {
+      name              = "${var.data_name}-datadisk-${format("%02d", count.index+1)}"
+      managed_disk_id   = "${element(azurerm_managed_disk.data_datadisk.*.id, count.index)}"
+      managed_disk_type = "Standard_LRS"
+      disk_size_gb      = "10"
+      create_option     = "Attach"
+      lun               = 0
+    }
+
   os_profile {
     computer_name  = "${var.data_name}-${format("%02d", count.index+1)}"
     admin_username = "${var.admin_username}"
