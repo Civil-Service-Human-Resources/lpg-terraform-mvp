@@ -19,7 +19,7 @@ variable "zone" {
     "demo" = "ukwest"
     "test" = "uksouth"
     "dev" = "uksouth"
-    "robest" = "uksouth"
+    "robtest" = "uksouth"
   }
 }
 
