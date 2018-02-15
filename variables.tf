@@ -18,6 +18,7 @@ variable "zone" {
   default = {
     "demo" = "ukwest"
     "test" = "uksouth"
+    "dev" = "uksouth"
   }
 }
 
