@@ -34,21 +34,10 @@ resource "azurerm_network_interface" "data_nic" {
     name                          = "${var.rg_prefix}-${var.data_name}-ipconfig"
     subnet_id                     = "${azurerm_subnet.subnet_data.id}"
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = "${element(azurerm_public_ip.data_pip.*.id, count.index)}"
 
   }
 
   count = "${var.data_vm_count}"
-}
-
-resource "azurerm_public_ip" "data_pip" {
-  name                         = "${var.rg_prefix}-${var.data_name}-ip-${format("%02d", count.index+1)}"
-  location                     = "${lookup(var.zone, terraform.workspace)}"
-  resource_group_name          = "${azurerm_resource_group.rg.name}"
-  public_ip_address_allocation = "Dynamic"
-  domain_name_label            = "${var.data_name}-${terraform.workspace}-${var.dns_name}"
-
-  count = "${var.public_vm_count}"
 }
 
 resource "azurerm_managed_disk" "data_datadisk" {
