@@ -35,7 +35,7 @@ git clone https://github.com/Civil-Service-Human-Resources/lpg-terraform-mvp.git
 cd lpg-terraform-mvp
 #add public key to variables.tf
 newPub=`cat ~/.ssh/${newEnv}.key.pub` || error
-gsed -i -e "/newkey/a \    \"${newEnv}\" = \"${newPub}\"" variables.tf
+sed -i -e "/newkey/a \    \"${newEnv}\" = \"${newPub}\"" variables.tf
 #decrypt files
 echo ${vaultpass} > vault.yml
 ansible-vault decrypt stateS3.tf --vault-password-file=vault.yml

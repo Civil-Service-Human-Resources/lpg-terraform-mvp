@@ -1,22 +1,22 @@
-########### public ###########
+###### xapiworker ######
 
-variable "public_name" {
+variable "xapiworker_name" {
   description = "Name of Application that these VMs will be used running"
-  default     = "public"
+  default     = "xapiworker"
 }
 
-variable "public_vm_count" {
+variable "xapiworker_vm_count" {
   description = "Number of Virtual Machines to build"
-  default     = "1"
+  default     = "2"
 }
 
-variable "public_vm_size" {
+variable "xapiworker_vm_size" {
   description = "Specifies the size of the virtual machine."
   default     = "Standard_A2_v2"
 }
 
 resource "azurerm_availability_set" "public_avset" {
-  name                         = "${var.dns_name}avset"
+  name                         = "${azurerm_resource_group.rg.name}-${var.public_name}-avg"
   location                     = "${lookup(var.zone, terraform.workspace)}"
   resource_group_name          = "${azurerm_resource_group.rg.name}"
   platform_fault_domain_count  = 2
@@ -28,31 +28,19 @@ resource "azurerm_network_interface" "public_nic" {
   name                = "${var.rg_prefix}-${var.public_name}-nic-${format("%02d", count.index+1)}"
   location            = "${lookup(var.zone, terraform.workspace)}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
-  network_security_group_id  =  "${azurerm_network_security_group.public_sg.id}"
 
   ip_configuration {
     name                          = "${var.rg_prefix}-${var.public_name}-ipconfig"
-    subnet_id                     = "${azurerm_subnet.subnet_public.id}"
+    subnet_id                     = "${azurerm_subnet.subnet_xapiworker.id}"
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = "${element(azurerm_public_ip.public_pip.*.id, count.index)}"
 
   }
 
   count = "${var.public_vm_count}"
 }
 
-resource "azurerm_public_ip" "public_pip" {
-  name                         = "${var.rg_prefix}-${var.public_name}-ip-${format("%02d", count.index+1)}"
-  location                     = "${lookup(var.zone, terraform.workspace)}"
-  resource_group_name          = "${azurerm_resource_group.rg.name}"
-  public_ip_address_allocation = "Dynamic"
-  domain_name_label            = "${terraform.workspace}-${var.dns_name}"
-
-  count = "${var.public_vm_count}"
-}
-
 resource "azurerm_managed_disk" "public_datadisk" {
-  name                 = "${var.public_name}-datadisk-${format("%02d", count.index+1)}"
+  name                 = "${var.public_name}-appdisk-${format("%02d", count.index+1)}"
   location             = "${lookup(var.zone, terraform.workspace)}"
   resource_group_name  = "${azurerm_resource_group.rg.name}"
   storage_account_type = "Standard_LRS"
@@ -113,3 +101,5 @@ resource "azurerm_virtual_machine" "public_vm" {
 
   count = "${var.public_vm_count}"
 }
+
+
