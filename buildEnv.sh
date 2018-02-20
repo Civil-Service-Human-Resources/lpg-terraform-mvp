@@ -24,7 +24,7 @@ function error {
 #azure login
 az login -u ${azuser} -p ${azpass} || exit 2
 
-#cerate key pair
+#create key pair
 ssh-keygen -t rsa -N "" -f ~/.ssh/${newEnv}.key
 
 echo "----- Start Terraform-ing -----"
@@ -38,8 +38,8 @@ newPub=`cat ~/.ssh/${newEnv}.key.pub` || error
 sed -i -e "/newkey/a \    \"${newEnv}\" = \"${newPub}\"" variables.tf
 #decrypt files
 echo ${vaultpass} > vault.yml
-ansible-vault decrypt stateS3.tf --vault-password-file=vault.yml
-ansible-vault decrypt key.tf --vault-password-file=vault.yml
+ansible-vault decrypt azure-state.tf --vault-password-file=vault.yml
+ansible-vault decrypt azure-key.tf --vault-password-file=vault.yml
 #run terraform
 terraform init || error
 terraform workspace new ${newEnv} || error
