@@ -29,7 +29,7 @@ resource "azurerm_network_interface" "bastion_nic" {
 }
 
 resource "azurerm_managed_disk" "bastion_datadisk" {
-  name                 = "${var.bastion_name}-appdisk-${format("%02d", count.index+1)}"
+  name                 = "${var.bastion_name}-datadisk-${format("%02d", count.index+1)}"
   location             = "${lookup(var.zone, terraform.workspace)}"
   resource_group_name  = "${azurerm_resource_group.rg.name}"
   storage_account_type = "Standard_LRS"
