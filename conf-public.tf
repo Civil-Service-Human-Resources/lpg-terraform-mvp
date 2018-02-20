@@ -40,7 +40,7 @@ resource "azurerm_network_interface" "public_nic" {
 }
 
 resource "azurerm_managed_disk" "public_datadisk" {
-  name                 = "${var.public_name}-appdisk-${format("%02d", count.index+1)}"
+  name                 = "${var.public_name}-datadisk-${format("%02d", count.index+1)}"
   location             = "${lookup(var.zone, terraform.workspace)}"
   resource_group_name  = "${azurerm_resource_group.rg.name}"
   storage_account_type = "Standard_LRS"
@@ -73,7 +73,7 @@ resource "azurerm_virtual_machine" "public_vm" {
   }
 
   storage_data_disk {
-      name              = "${azurerm_managed_disk.public_datadisk.name}"
+      name              = "${var.public_name}-datadisk-${format("%02d", count.index+1)}"
       managed_disk_id   = "${element(azurerm_managed_disk.public_datadisk.*.id, count.index)}"
       managed_disk_type = "Standard_LRS"
       disk_size_gb      = "10"
