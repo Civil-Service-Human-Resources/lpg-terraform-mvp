@@ -61,6 +61,13 @@ resource "azurerm_subnet" "subnet_redis" {
   network_security_group_id = "${azurerm_network_security_group.redis_sg.id}"
 }
 
+resource "azurerm_subnet" "subnet_gateways" {
+  name                      = "${var.rg_prefix}-subnet-gateways"
+  virtual_network_name      = "${azurerm_virtual_network.vnet.name}"
+  resource_group_name       = "${azurerm_resource_group.rg.name}"
+  address_prefix            = "10.0.16.0/24"
+  network_security_group_id = "${azurerm_network_security_group.gateways_sg.id}"
+}
 
 resource "azurerm_storage_account" "stor" {
   name                     = "${terraform.workspace}${var.dns_name}stor"

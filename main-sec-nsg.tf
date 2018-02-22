@@ -175,3 +175,9 @@ resource "azurerm_network_security_group" "redis_sg" {
   location            = "${lookup(var.zone, terraform.workspace)}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
 }
+
+resource "azurerm_network_security_group" "gateways_sg" {
+  name                = "${var.rg_prefix}-${terraform.workspace}-gateways"
+  location            = "${lookup(var.zone, terraform.workspace)}"
+  resource_group_name = "${azurerm_resource_group.rg.name}"
+}
